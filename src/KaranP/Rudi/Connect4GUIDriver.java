@@ -8,7 +8,7 @@ public class Connect4GUIDriver {
 		
 		JFrame frame = new JFrame("Presentation Tracker");		
 		frame.setSize(900,900);
-		frame.getContentPane().add(new Connect4Panel());		
+		frame.getContentPane().add(new Connect4Panel());
 		frame.pack();
 		frame.setVisible(true);
 		frame.setFocusable(false);
