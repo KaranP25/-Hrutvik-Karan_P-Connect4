@@ -6,7 +6,7 @@ public class Connect4GUIDriver {
 
 	public static void main(String[] args) {
 		
-		JFrame frame = new JFrame("Presentation Tracker");		
+		JFrame frame = new JFrame("Connect 4");		
 		frame.setSize(900,900);
 		frame.getContentPane().add(new Connect4Panel());
 		frame.pack();
