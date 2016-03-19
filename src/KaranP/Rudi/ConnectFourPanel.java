@@ -3,45 +3,56 @@ package KaranP.Rudi;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class Connect4Panel extends JPanel {
-	int ROWS = 7, COLUMNS = 7, HGAP = 10, VGAP = 10;
-	JLabel[][] board;
-	JButton[] placement;
+public class ConnectFourPanel extends JPanel {
+	private final static int GRID_ROW = 7, GRID_COL = 7, HGAP = 10, VGAP = 10;
+	private static JLabel[][] board;
+	private static JButton[] placement;
+	private static int[][] grid;
+	private final static int BOARD_ROW = 6 , BOARD_COL = 7;
+	private final static int EMPTY = 0, P1 = 1, P2 = 2;
+	
+	private boolean turnP1;
+	private boolean turnP2;
 
-	public Connect4Panel() {
+	public ConnectFourPanel() {
 		setPreferredSize(new Dimension(770, 780));
 		setBackground(new Color(0, 0, 0));
 
 		//
-		setLayout(new GridLayout(ROWS, COLUMNS, HGAP, VGAP));
+		setLayout(new GridLayout(GRID_ROW, GRID_COL, HGAP, VGAP));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		placement = new JButton[7];
+		placement = new JButton[BOARD_COL];
 		for (int i = 0; i < placement.length; i++) {
 			placement[i] = new JButton();
 			placement[i].setHorizontalAlignment(SwingConstants.CENTER);
 			placement[i].setContentAreaFilled(false);
 			placement[i].setEnabled(true);
 			placement[i].setBorder(BorderFactory.createLineBorder(Color.WHITE));
+			//placement[i].addActionListener(new buttonActionListener());
 			add(placement[i]);
 		}		
 		
-		board = new JLabel[7][6];
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 6; j++) {
-				board[i][j] = new JLabel();
+		board = new JLabel[BOARD_ROW][BOARD_COL];
+		grid = new int[BOARD_ROW][BOARD_COL];
+		for (int i = 0; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL; j++) {
+				board[i][j] = new JLabel("");
+				grid[i][j] = EMPTY;
 				board[i][j].setOpaque(true);
 				board[i][j].setBackground(Color.RED);
-				//board[i][j].setForeground(Color.WHITE);
 				board[i][j].setBorder(BorderFactory.createLineBorder(Color.WHITE));
 				add(board[i][j]);
 			}
 		}		
-		loadImageFile();
-		
+		loadImageFile();		
 	}
+	
+	
 	private void loadImageFile(){
 		try {
 		    Image downArrow = ImageIO.read(getClass().getResource("/resources/DownArrow.png"));
@@ -49,11 +60,11 @@ public class Connect4Panel extends JPanel {
 		    	placement[i].setIcon(new ImageIcon(downArrow));
 		    }
 		    Image area = ImageIO.read(getClass().getResource("/resources/area.png"));
-		    for (int i = 0; i < 7; i++) {
-				for (int j = 0; j < 6; j++) {
+		    for (int i = 0; i < BOARD_ROW; i++) {
+				for (int j = 0; j < BOARD_COL; j++) {
 					board[i][j].setIcon(new ImageIcon(area));
 				}
-			}		    
+			}   
 		  }catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Images Could Not Be Loaded!");
 				System.exit(0); // terminates code
@@ -62,4 +73,6 @@ public class Connect4Panel extends JPanel {
 				System.exit(0); // terminates code
 		  }
 	}
+	
+	
 }

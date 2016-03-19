@@ -2,13 +2,13 @@ package KaranP.Rudi;
 
 import javax.swing.*;
 
-public class Connect4GUIDriver {
+public class ConnectFourGUIDriver {
 
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame("Connect 4");		
 		frame.setSize(900,900);
-		frame.getContentPane().add(new Connect4Panel());
+		frame.getContentPane().add(new ConnectFourPanel());
 		frame.pack();
 		frame.setVisible(true);
 		frame.setFocusable(false);
