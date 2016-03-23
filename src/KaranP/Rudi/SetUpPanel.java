@@ -15,28 +15,28 @@ public class SetUpPanel extends JPanel {
 	public SetUpPanel() {
 		// Buttons
 		twoPlayersBtn = new JButton("Play With Two Player");
-		twoPlayersBtn.setFont(new Font("Sans Serif", Font.ITALIC, 20));
+		twoPlayersBtn.setFont(new Font("Sans Serif", Font.ITALIC, 14));
 		twoPlayersBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		twoPlayersBtn.setContentAreaFilled(true);
 		twoPlayersBtn.setEnabled(true);
 		twoPlayersBtn.addActionListener(new ButtonActionListener());
 
 		playAIBtn = new JButton("Play With Computer");
-		playAIBtn.setFont(new Font("Sans Serif", Font.ITALIC, 20));
+		playAIBtn.setFont(new Font("Sans Serif", Font.ITALIC, 14));
 		playAIBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		playAIBtn.setContentAreaFilled(true);
 		playAIBtn.setEnabled(false);
 		playAIBtn.addActionListener(new ButtonActionListener());
 
 		newGameBtn = new JButton("Start A New Game");
-		newGameBtn.setFont(new Font("Sans Serif", Font.ITALIC, 20));
+		newGameBtn.setFont(new Font("Sans Serif", Font.ITALIC, 12));
 		newGameBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		newGameBtn.setContentAreaFilled(true);
 		newGameBtn.setEnabled(true);
 		newGameBtn.addActionListener(new ButtonActionListener());
 
 		randomPlayerBtn = new JButton("Choose a Random Player");
-		randomPlayerBtn.setFont(new Font("Sans Serif", Font.ITALIC, 20));
+		randomPlayerBtn.setFont(new Font("Sans Serif", Font.ITALIC, 14));
 		randomPlayerBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		randomPlayerBtn.setContentAreaFilled(true);
 		randomPlayerBtn.setEnabled(true);
@@ -44,7 +44,7 @@ public class SetUpPanel extends JPanel {
 
 		// Labels
 		player1Lbl = new JLabel("Player 1 > Blue Chip");
-		player1Lbl.setFont(new Font("Sans Serif", Font.BOLD, 24));
+		player1Lbl.setFont(new Font("Sans Serif", Font.BOLD, 12));
 		player1Lbl.setHorizontalAlignment(SwingConstants.CENTER);
 		player1Lbl.setOpaque(true);
 		player1Lbl.setBackground(Color.BLUE);
@@ -52,7 +52,7 @@ public class SetUpPanel extends JPanel {
 		player1Lbl.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
 		player2Lbl = new JLabel("Player 2 > Red Chip");
-		player2Lbl.setFont(new Font("Sans Serif", Font.BOLD, 24));
+		player2Lbl.setFont(new Font("Sans Serif", Font.BOLD, 12));
 		player2Lbl.setHorizontalAlignment(SwingConstants.CENTER);
 		player2Lbl.setOpaque(true);
 		player2Lbl.setBackground(Color.RED);
@@ -60,7 +60,7 @@ public class SetUpPanel extends JPanel {
 		player2Lbl.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
 		AILbl = new JLabel("Computer > Red Chip");
-		AILbl.setFont(new Font("Sans Serif", Font.BOLD, 24));
+		AILbl.setFont(new Font("Sans Serif", Font.BOLD, 12));
 		AILbl.setHorizontalAlignment(SwingConstants.CENTER);
 		AILbl.setOpaque(true);
 		AILbl.setBackground(Color.RED);
@@ -72,15 +72,14 @@ public class SetUpPanel extends JPanel {
 		// Set up the panels
 		setUpPanel = new JPanel();
 		setUpPanel.setBackground(Color.BLACK);
-		// setUpPanel.setLayout(new GridLayout(1, 2, 40, 40));
-		setUpPanel.setLayout(new FlowLayout(5, 40, 2));
+		setUpPanel.setLayout(new FlowLayout(5, 10, 2));
 		setUpPanel.add(twoPlayersBtn);
 		setUpPanel.add(playAIBtn);
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		setBackground(Color.BLACK);
-		setPreferredSize(new Dimension(790, 840));
+		setPreferredSize(new Dimension(440, 480));
 		add(setUpPanel, BorderLayout.NORTH);
 		add(startConnectFour, BorderLayout.CENTER);
 	}

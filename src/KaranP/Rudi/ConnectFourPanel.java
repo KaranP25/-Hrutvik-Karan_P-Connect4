@@ -21,7 +21,7 @@ public class ConnectFourPanel extends JPanel {
 	MultiPlayerConnect4 multiPlayer;
 
 	public ConnectFourPanel() {
-		setPreferredSize(new Dimension(770, 780));
+		setPreferredSize(new Dimension(420, 430));
 		setBackground(new Color(0, 0, 0));
 
 		//
