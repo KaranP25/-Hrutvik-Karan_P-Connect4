@@ -10,7 +10,7 @@ public class SetUpPanel extends JPanel {
 	private static JButton twoPlayersBtn, playAIBtn, newGameBtn, randomPlayerBtn;
 	private static JLabel player1Lbl, player2Lbl, AILbl;
 	private JPanel mainPanel, setUpPanel;
-	private ConnectFourBoard startConnectFour;
+	private ConnectFourPanel startConnectFour;
 
 	public SetUpPanel() {
 		// Buttons
@@ -67,7 +67,7 @@ public class SetUpPanel extends JPanel {
 		AILbl.setForeground(Color.WHITE);
 		AILbl.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-		startConnectFour = new ConnectFourBoard();
+		startConnectFour = new ConnectFourPanel();
 
 		// Set up the panels
 		setUpPanel = new JPanel();
