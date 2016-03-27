@@ -39,7 +39,6 @@ public class MultiPlayerConnect4 {
 				break;
 			}
 		}
-		System.out.println();
 		if (change == 1){
 			ConnectFourPanel.bluePlaced(rowPlaced, col);
 		}else if (change == 2){

@@ -52,8 +52,7 @@ public class ConnectFourPanel extends JPanel {
 				add(board[i][j]);
 			}
 		}
-		loadImageFile();
-		
+		loadImageFile();		
 		multiPlayer = new MultiPlayerConnect4(grid);
 	}
 
@@ -139,6 +138,15 @@ public class ConnectFourPanel extends JPanel {
 
 	public static void redPlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(Color.RED);
+		//switchPlayer = true;
+		if (isColumnFilled(posCol)) {
+			placement[posCol].setEnabled(false);
+			placement[posCol].setToolTipText("Column FILLED");
+		}
+	}
+	
+	public static void greenPlaced(int posRow, int posCol) {
+		board[posRow][posCol].setBackground(new Color(102, 255, 102));
 		//switchPlayer = true;
 		if (isColumnFilled(posCol)) {
 			placement[posCol].setEnabled(false);
