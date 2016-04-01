@@ -67,7 +67,6 @@ public class ConnectFourPanel extends JPanel {
 					colPlaced = i;
 					rowPlaced = getRowPlacedAt(colPlaced);
 					if (gameType.equals("MultiPlayer")){
-						multiPlayer.switchCurrentPlayer();
 						currentPlayer = multiPlayer.getCurrentPlayer();
 						
 						multiPlayer.setRowPlaced(rowPlaced);
@@ -79,6 +78,7 @@ public class ConnectFourPanel extends JPanel {
 						} else if (currentPlayer == P2) {
 							multiPlayer.placePlayer2Chip();
 						}
+						multiPlayer.switchCurrentPlayer();
 					}else if (gameType.equals("ComputerPlayer")){
 						currentPlayer = playWithComputer.getCurrentPlayer();
 						if (currentPlayer == P1) {
