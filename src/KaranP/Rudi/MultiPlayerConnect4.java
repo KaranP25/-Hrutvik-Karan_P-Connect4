@@ -3,48 +3,58 @@ package KaranP.Rudi;
 import java.awt.Color;
 import java.util.Random;
 
-public class MultiPlayerConnect4 {
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+
+public class MultiPlayerConnect4{	
+	private int rowPlaced, colPlaced;
 	private int[][] grid;
 	private final static int EMPTY = 0, P1 = 1, P2 = 2;
 	private int currentPlayer;
-	private boolean switchPlayer;
+	private final static int BOARD_ROW = 6, BOARD_COL = 7;
 	
 	public MultiPlayerConnect4(int[][] grid){
 		this.grid = grid;
 	}
 	
-	public void switchCurrentPlayer() {
-		if (switchPlayer) {
-			if (currentPlayer == 1) {
-				currentPlayer = 2;
-			} else if (currentPlayer == 2) {
-				currentPlayer = 1;
-			}
+	public void setColPlaced(int col){
+		this.colPlaced = col;
+	}
+	
+	public void setRowPlaced(int row){
+		this.rowPlaced = row;
+	}
+	
+	public void upDateList(){
+		grid[rowPlaced][colPlaced] = currentPlayer;
+	}
+	
+	public void switchCurrentPlayer() {	
+		if (currentPlayer == 1) {
+			currentPlayer = 2;
+		} else if (currentPlayer == 2) {
+			currentPlayer = 1;
+		}		
+	}
+	
+	public void placePlayer1Chip(){
+		if(currentPlayer == P1){
+			ConnectFourPanel.bluePlaced(rowPlaced, colPlaced);
+			print();
 		}
 	}
-
+	
+	public void placePlayer2Chip(){
+		if(currentPlayer == P2){
+			ConnectFourPanel.redPlaced(rowPlaced, colPlaced);
+			print();
+		}	
+	}
+	
 	public int getRandomPlayer() {
 		Random randStart = new Random();
 		currentPlayer = randStart.nextInt((P2 - P1) + 1) + P1;
-		switchPlayer = false;
 		return currentPlayer;
-	}	
-
-	public void placeChip(int col, int change) {
-		int rowPlaced = 0;
-		for (int i = 5; i >= 0; i--) {
-			if (grid[i][col] == EMPTY) {
-				grid[i][col] = change;
-				rowPlaced = i;
-				break;
-			}
-		}
-		if (change == 1){
-			ConnectFourPanel.bluePlaced(rowPlaced, col);
-		}else if (change == 2){
-			ConnectFourPanel.redPlaced(rowPlaced, col);
-		}
-		switchPlayer = true;
 	}
 	
 	public int getCell(int x, int y){
@@ -54,5 +64,15 @@ public class MultiPlayerConnect4 {
 	public int getCurrentPlayer(){
 		return currentPlayer;
 	}
+	
+	public void print(){
+		for (int i = 0; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL; j++) {
+				System.out.print(grid[i][j]);
+			}
+			System.out.println();
+		}
+	}
+	
 	
 }

@@ -162,6 +162,8 @@ public class SetUpPanel extends JPanel {
 
 			}
 			if (event.getSource() == playerGoFirstBtn) {
+				startConnectFour.setTurn(1); // 1 represents the human
+				
 				playerGoFirstBtn.setVisible(false);
 				compGoFirstBtn.setVisible(false);
 				setUpPanel.remove(playerGoFirstBtn);
@@ -174,6 +176,7 @@ public class SetUpPanel extends JPanel {
 
 			}
 			if (event.getSource() == compGoFirstBtn) {
+				
 				playerGoFirstBtn.setVisible(false);
 				compGoFirstBtn.setVisible(false);
 				setUpPanel.remove(playerGoFirstBtn);
@@ -183,6 +186,11 @@ public class SetUpPanel extends JPanel {
 				setUpPanel.add(player1Lbl);
 				setUpPanel.add(AILbl);
 				startConnectFour.setBoardVisible(true);
+				
+				startConnectFour.setTurn(99); // 99 represent the computer
+				startConnectFour.computerTurnFirst();
+				
+				
 			}
 
 		}
