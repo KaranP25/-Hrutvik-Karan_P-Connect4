@@ -29,7 +29,7 @@ public class ConnectFourPanel extends JPanel {
 	private boolean canMoveBeMade = true ;
 	private int movesPossible = BOARD_ROW * BOARD_COL;
 	AIPlayer playWithComputer;
-	MultiPlayerConnect4 multiPlayerConnect4;
+	MultiPlayer multiPlayerConnect4;
 
 	public ConnectFourPanel() {
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -64,7 +64,7 @@ public class ConnectFourPanel extends JPanel {
 			}
 		}
 		loadImageFile();
-		multiPlayerConnect4 = new MultiPlayerConnect4(grid);
+		multiPlayerConnect4 = new MultiPlayer(grid);
 		playWithComputer = new AIPlayer(grid);
 		
 	}

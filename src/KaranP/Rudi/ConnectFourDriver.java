@@ -7,13 +7,13 @@ import javax.swing.*;
  * @author hrutvik and Karan 
  *
  */
-public class ConnectFourGUIDriver {
+public class ConnectFourDriver {
 
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame("Connect 4");		
 		frame.setSize(900,900);
-		frame.getContentPane().add(new SetUpPanel());
+		frame.getContentPane().add(new SetUpGUIPanel());
 		frame.pack();
 		frame.setVisible(true);
 		frame.setFocusable(false);

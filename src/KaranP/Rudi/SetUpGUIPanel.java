@@ -106,7 +106,7 @@ public class SetUpGUIPanel extends JPanel {
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(440, 480));
+		setPreferredSize(new Dimension(450, 480));
 		setBackground(Color.BLACK);
 		add(setUpPanel, BorderLayout.NORTH);
 		setBackgroundImage(true);
