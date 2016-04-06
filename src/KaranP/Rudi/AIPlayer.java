@@ -1,7 +1,11 @@
 package KaranP.Rudi;
 
 import java.util.Random;
-
+/**
+ * This class contains methods and instance variables of the AI object
+ * @author hrutvik and karan
+ *
+ */
 public class AIPlayer {
 	private final static int BOARD_ROW = 6, BOARD_COL = 7;
 	private int[][] grid;

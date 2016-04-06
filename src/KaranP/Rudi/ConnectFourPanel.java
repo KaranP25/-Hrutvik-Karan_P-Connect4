@@ -8,6 +8,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
+/**
+ * This class is the panel which contains all the algorithms required to play the game
+ * @author hrutvik and karan
+ *
+ */
 public class ConnectFourPanel extends JPanel {
 	private final static int GRID_ROW = 7, GRID_COL = 7, HGAP = 10, VGAP = 10;
 	private final static int PANEL_WIDTH = (50 * GRID_ROW) + (GRID_ROW * HGAP) + 10;

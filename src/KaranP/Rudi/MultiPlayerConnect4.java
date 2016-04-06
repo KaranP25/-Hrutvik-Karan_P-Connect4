@@ -6,6 +6,11 @@ import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+/**
+ * This class contains methods and instance variables of a player object (P1 and P2)
+ * @author hrutvik and karan
+ *
+ */
 public class MultiPlayerConnect4{	
 	private int rowPlaced, colPlaced;
 	private int[][] grid;

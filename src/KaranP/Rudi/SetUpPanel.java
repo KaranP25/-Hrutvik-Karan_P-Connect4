@@ -8,6 +8,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * This class contains the buttons and labels and determines how the GUI will be displayed
+ * This class has a setup panel embedded in the main panel  
+ * @author hrutvik and karan
+ *
+ */
 public class SetUpPanel extends JPanel {
 	private static JButton twoPlayersBtn, playAIBtn, newGameBtn, randomPlayerBtn, playerGoFirstBtn, compGoFirstBtn;
 	private static JLabel player1Lbl, player2Lbl, AILbl, startScreen;

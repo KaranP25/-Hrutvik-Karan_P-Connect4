@@ -2,6 +2,11 @@ package KaranP.Rudi;
 
 import javax.swing.*;
 
+/**
+ * This class is the driver which contains the JFrame and JPanel (SetUpPanel) with it's dimensions 
+ * @author hrutvik and Karan 
+ *
+ */
 public class ConnectFourGUIDriver {
 
 	public static void main(String[] args) {
