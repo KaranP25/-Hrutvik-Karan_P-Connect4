@@ -12,10 +12,10 @@ public class AIPlayer {
 	
 	public AIPlayer(int[][] grid){
 		this.grid = grid;
-		resetAI();
+		resetAIArray();
 	}
 	
-	public void resetAI(){
+	public void resetAIArray(){
 		for (int i = 0; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL; j++) {
 				grid[i][j] = EMPTY;
@@ -28,7 +28,6 @@ public class AIPlayer {
 	private int getRandomCol(){
 		Random randStart = new Random();
 		int x = randStart.nextInt((BOARD_COL - 1) + 1);
-		System.out.println(x); 
 		return x;
 	}
 	
@@ -37,6 +36,7 @@ public class AIPlayer {
 		do{
 			col = getRandomCol();
 		}while(isColumnFull(col));
+		
 		int row = getRowPlacement(col);
 		grid[row][col] = COMPUTER;
 		this.compRow = row;
@@ -95,21 +95,12 @@ public class AIPlayer {
 		return currentPlayer;
 	}
 	
-	
-	public void updateAIArray (int row, int col, int change){
+	public void updateArrayCell (int row, int col, int change){
 		grid[row][col] = change;
 	}
+	
 	public int getCell(int x, int y){
 		return grid[x][y];
-	}
-	
-	public void print(){
-		for (int i = 0; i < BOARD_ROW; i++) {
-			for (int j = 0; j < BOARD_COL; j++) {
-				System.out.print(grid[i][j]);
-			}
-			System.out.println();
-		}
 	}
 
 }
