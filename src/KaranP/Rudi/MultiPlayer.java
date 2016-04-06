@@ -11,14 +11,14 @@ import javax.swing.JLabel;
  * @author hrutvik and karan
  *
  */
-public class MultiPlayerConnect4{	
+public class MultiPlayer{	
 	private int rowPlaced, colPlaced;
 	private int[][] grid;
 	private final static int EMPTY = 0, P1 = 1, P2 = 2;
 	private int currentPlayer;
 	private final static int BOARD_ROW = 6, BOARD_COL = 7;
 	
-	public MultiPlayerConnect4(int[][] grid){
+	public MultiPlayer(int[][] grid){
 		this.grid = grid;
 		resetMultiplayerArray();
 	}	
