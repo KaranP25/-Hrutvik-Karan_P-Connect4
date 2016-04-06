@@ -10,6 +10,8 @@ import java.util.*;
 
 public class ConnectFourPanel extends JPanel {
 	private final static int GRID_ROW = 7, GRID_COL = 7, HGAP = 10, VGAP = 10;
+	private final static int PANEL_WIDTH = (50 * GRID_ROW) + (GRID_ROW * HGAP) + 10;
+	private final static int PANEL_HEIGHT = (50 * GRID_COL) + (GRID_COL * VGAP) + 10;
 	private static JLabel[][] board;
 	private static JButton[] placement;
 	private static int[][] grid;
@@ -19,11 +21,13 @@ public class ConnectFourPanel extends JPanel {
 	private String gameType;
 	private int currentPlayer;
 	private boolean switchPlayer;
+	private boolean canMoveBeMade = true ;
+	private int movesPossible = BOARD_ROW * BOARD_COL;
 	AIPlayer playWithComputer;
-	MultiPlayerConnect4 multiPlayer;
+	MultiPlayerConnect4 multiPlayerConnect4;
 
 	public ConnectFourPanel() {
-		setPreferredSize(new Dimension(420, 430));
+		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(new Color(0, 0, 0));
 
 		//
@@ -55,7 +59,7 @@ public class ConnectFourPanel extends JPanel {
 			}
 		}
 		loadImageFile();
-		multiPlayer = new MultiPlayerConnect4(grid);
+		multiPlayerConnect4 = new MultiPlayerConnect4(grid);
 		playWithComputer = new AIPlayer(grid);
 	}
 
@@ -66,39 +70,46 @@ public class ConnectFourPanel extends JPanel {
 				if (event.getSource() == placement[i]) {
 					colPlaced = i;
 					rowPlaced = getRowPlacedAt(colPlaced);
-					if (gameType.equals("MultiPlayer")){
-						currentPlayer = multiPlayer.getCurrentPlayer();
+					
+					if (gameType.equals("MultiPlayerConnect4")){
+						multiPlayerConnect4.switchCurrentPlayer();
+						currentPlayer = multiPlayerConnect4.getCurrentPlayer();
 						
-						multiPlayer.setRowPlaced(rowPlaced);
-						multiPlayer.setColPlaced(colPlaced);
-						multiPlayer.upDateList();
+						multiPlayerConnect4.setRowPlaced(rowPlaced);
+						multiPlayerConnect4.setColPlaced(colPlaced);
+						multiPlayerConnect4.upDateList();
 						
 						if (currentPlayer == P1) {
-							multiPlayer.placePlayer1Chip();
+							multiPlayerConnect4.placePlayer1Chip();
 						} else if (currentPlayer == P2) {
-							multiPlayer.placePlayer2Chip();
+							multiPlayerConnect4.placePlayer2Chip();
 						}
-						multiPlayer.switchCurrentPlayer();
+						movesPossible -= 1;	
+						
 					}else if (gameType.equals("ComputerPlayer")){
 						currentPlayer = playWithComputer.getCurrentPlayer();
 						if (currentPlayer == P1) {
+							grid[rowPlaced][colPlaced] = P1;
 							bluePlaced(rowPlaced, colPlaced);
 							playWithComputer.updateAIArray(rowPlaced, colPlaced, P1);
-							grid[rowPlaced][colPlaced] = P1;
-							print();
-							
+							print();	
+							movesPossible -= 1;	
+						}
+						if(isNextMovePossible() && !isWinnerFound()){
 							playWithComputer.switchCurrentPlayer();
+							computersTurn();	
 						}
 						
 					}
 					updateArray();
-					if(checkWin()){
+					checkTieGame();
+					if(isWinnerFound()){
 						if (currentPlayer == 1 || currentPlayer == 2){
 							JOptionPane.showMessageDialog(null, "Player " + currentPlayer + " wins!!!");
 						}else if (currentPlayer == 99){
 							JOptionPane.showMessageDialog(null, "Computer wins!!!");
 						}
-					}
+					}	
 				}
 			}
 		}
@@ -127,20 +138,25 @@ public class ConnectFourPanel extends JPanel {
 	
 	// multiplayer ****************************************************
 	public int getRandomPlayer(){
-		return multiPlayer.getRandomPlayer();
+		return multiPlayerConnect4.getRandomPlayer();
 	}
 	//**********************************************************
 	
 	//AI
-	public void computerTurnFirst(){
-		int randomAIColPlaced = playWithComputer.firstTurnAI();
-		int randomAIRowPlaced = getRowPlacedAt(randomAIColPlaced);
-		System.out.println(randomAIRowPlaced);
-		greenPlaced(randomAIRowPlaced, randomAIColPlaced);
-		grid[randomAIRowPlaced][randomAIColPlaced] = COMPUTER;
-		playWithComputer.updateAIArray(randomAIRowPlaced, randomAIColPlaced, COMPUTER);
-		
-		playWithComputer.switchCurrentPlayer();
+	public void computersTurn(){
+	currentPlayer = playWithComputer.getCurrentPlayer();
+		if(currentPlayer == COMPUTER){
+			playWithComputer.compMove();
+			int compRowPlaced = playWithComputer.getAIRow();
+			int compColPlaced = playWithComputer.getAICol();
+			System.out.println(compRowPlaced);
+			greenPlaced(compRowPlaced, compColPlaced);
+			grid[compRowPlaced][compColPlaced] = COMPUTER;
+			//playWithComputer.updateAIArray(compRowPlaced, compColPlaced, COMPUTER);
+			
+			playWithComputer.switchCurrentPlayer();
+			movesPossible -= 1;	
+		}
 	}
 	
 	public void setTurn(int turn){
@@ -158,21 +174,25 @@ public class ConnectFourPanel extends JPanel {
 	}
 	
 	private int getRowPlacedAt(int col){
-		int rowPlaced = 0;
-		for (int i = BOARD_ROW - 1; i >= 0; i--) {
-			if (grid[i][col] == EMPTY) {
-				rowPlaced = i;
-				break;
+		int rowPlaceable = BOARD_ROW - 1;;
+		boolean rowPlacementFound = false;
+		do{
+			if (grid[rowPlaceable][col] == EMPTY) {
+				rowPlacementFound = true;
+			}else if(rowPlaceable >= 0){
+				rowPlaceable -= 1;
 			}
-		}
-		return rowPlaced;
+			
+		}while(!rowPlacementFound);
+		
+		return rowPlaceable;
 	}
 	
 	private void updateArray(){
 		for (int i = 0; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL; j++) {
-				if(gameType.equals("MultiPlayer")){
-					grid[i][j] = multiPlayer.getCell(i, j);
+				if(gameType.equals("MultiPlayerConnect4")){
+					grid[i][j] = multiPlayerConnect4.getCell(i, j);
 				}else if(gameType.equals("ComputerPlayer")){
 					grid[i][j] = playWithComputer.getCell(i, j);
 				}
@@ -237,8 +257,18 @@ public class ConnectFourPanel extends JPanel {
 			}
 		}
 	}
+	
+	private void checkTieGame(){
+		System.out.println(movesPossible);
+		if (movesPossible < 1){
+			setBoardVisible(false);
+			JOptionPane.showMessageDialog(null, "Tie Game!");
+		}
+		
+	}
 
-	private void hasWon(int c1x, int c1y, int c2x, int c2y, int c3x, int c3y, int c4x, int c4y) {
+	private void winnerFound(int c1x, int c1y, int c2x, int c2y, int c3x, int c3y, int c4x, int c4y) {
+		this.canMoveBeMade = false;
 		setBoardVisible(false);
 
 		board[c1x][c1y].setEnabled(true);
@@ -248,15 +278,15 @@ public class ConnectFourPanel extends JPanel {
 
 	}
 
-	private boolean checkWin() {
+	private boolean isWinnerFound() {
 		int tempCheck;
 		// vertical win
-		for (int i = BOARD_ROW - 1; i >= 2; i--) {
+		for (int i = BOARD_ROW - 1; i >= 3; i--) {
 			for (int j = BOARD_COL - 1; j >= 0; j--) {
 				tempCheck = grid[i][j];
 				if (tempCheck != EMPTY && tempCheck == grid[i - 1][j] && tempCheck == grid[i - 2][j]
 						&& tempCheck == grid[i - 3][j]) {
-					hasWon(i, j, i - 1, j, i - 2, j, i - 3, j);
+					winnerFound(i, j, i - 1, j, i - 2, j, i - 3, j);
 					return true;
 				}
 			}
@@ -267,7 +297,7 @@ public class ConnectFourPanel extends JPanel {
 				tempCheck = grid[i][j];
 				if (tempCheck != EMPTY && tempCheck == grid[i][j + 1] && tempCheck == grid[i][j + 2]
 						&& tempCheck == grid[i][j + 3]) {
-					hasWon(i, j, i, j + 1, i, j + 2, i, j + 3);
+					winnerFound(i, j, i, j + 1, i, j + 2, i, j + 3);
 					return true;
 				}
 			}
@@ -278,7 +308,7 @@ public class ConnectFourPanel extends JPanel {
 				tempCheck = grid[i][j];
 				if (tempCheck != EMPTY && tempCheck == grid[i + 1][j + 1] && tempCheck == grid[i + 2][j + 2]
 						&& tempCheck == grid[i + 3][j + 3]) {
-					hasWon(i, j, i + 1, j + 1, i + 2, j + 2, i + 3, j + 3);
+					winnerFound(i, j, i + 1, j + 1, i + 2, j + 2, i + 3, j + 3);
 					return true;
 				}
 			}
@@ -288,13 +318,21 @@ public class ConnectFourPanel extends JPanel {
 				tempCheck = grid[i][j];
 				if (tempCheck != EMPTY && tempCheck == grid[i - 1][j + 1] && tempCheck == grid[i - 2][j + 2]
 						&& tempCheck == grid[i - 3][j + 3]) {
-					hasWon(i, j, i - 1, j + 1, i - 2, j + 2, i - 3, j + 3);
+					winnerFound(i, j, i - 1, j + 1, i - 2, j + 2, i - 3, j + 3);
 					return true;
 				}
 			}
 		}
 		return false;
 
+	}
+	
+	private boolean isNextMovePossible(){
+		if(canMoveBeMade){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	public void gameReset() {
@@ -309,9 +347,15 @@ public class ConnectFourPanel extends JPanel {
 			placement[i].setEnabled(false);
 			placement[i].setToolTipText("");
 		}
+		if(gameType.equals("MultiPlayerConnect4")){
+			multiPlayerConnect4.resetAI();
+		}else if(gameType.equals("ComputerPlayer")){
+			playWithComputer.resetAI();
+			canMoveBeMade = true;
+		}
 		currentPlayer = EMPTY;
-		gameType = "";
-		
+		gameType = "";		
+		movesPossible = BOARD_ROW * BOARD_COL;
 	}
 
 	public void setGameMode(String type) {

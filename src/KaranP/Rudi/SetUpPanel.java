@@ -3,14 +3,18 @@ package KaranP.Rudi;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class SetUpPanel extends JPanel {
 	private static JButton twoPlayersBtn, playAIBtn, newGameBtn, randomPlayerBtn, playerGoFirstBtn, compGoFirstBtn;
-	private static JLabel player1Lbl, player2Lbl, AILbl;
+	private static JLabel player1Lbl, player2Lbl, AILbl, startScreen;
 	private JPanel mainPanel, setUpPanel;
 	private ConnectFourPanel startConnectFour;
+	
+	private boolean firstStart = true;
 
 	public SetUpPanel() {
 		// Buttons
@@ -29,7 +33,7 @@ public class SetUpPanel extends JPanel {
 		playAIBtn.addActionListener(new ButtonActionListener());
 
 		newGameBtn = new JButton("Start A New Game");
-		newGameBtn.setFont(new Font("Sans Serif", Font.ITALIC, 12));
+		newGameBtn.setFont(new Font("Sans Serif", Font.ITALIC, 14));
 		newGameBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		newGameBtn.setContentAreaFilled(true);
 		newGameBtn.setEnabled(true);
@@ -57,6 +61,10 @@ public class SetUpPanel extends JPanel {
 		compGoFirstBtn.addActionListener(new ButtonActionListener());
 
 		// Labels
+		startScreen = new JLabel();
+		startScreen.setHorizontalAlignment(SwingConstants.CENTER);
+		loadBackgroundImage();		
+		
 		player1Lbl = new JLabel("Player 1 > Blue Chip");
 		player1Lbl.setFont(new Font("Sans Serif", Font.BOLD, 12));
 		player1Lbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,16 +100,22 @@ public class SetUpPanel extends JPanel {
 
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		setBackground(Color.BLACK);
 		setPreferredSize(new Dimension(440, 480));
+		setBackground(Color.BLACK);
 		add(setUpPanel, BorderLayout.NORTH);
-		add(startConnectFour, BorderLayout.CENTER);
+		setBackgroundImage(true);
+		//add(startConnectFour, BorderLayout.CENTER);
 	}
 
 	private class ButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			if (event.getSource() == twoPlayersBtn) {
-				startConnectFour.setGameMode("MultiPlayer");
+				if(firstStart){
+					setBackgroundImage(false);
+					firstStart = false;
+				}
+				
+				startConnectFour.setGameMode("MultiPlayerConnect4");
 				twoPlayersBtn.setVisible(false);
 				playAIBtn.setVisible(false);
 
@@ -112,6 +126,11 @@ public class SetUpPanel extends JPanel {
 
 			}
 			if (event.getSource() == playAIBtn) {
+				if(firstStart){
+					setBackgroundImage(false);
+					firstStart = false;
+				}
+				
 				startConnectFour.setGameMode("ComputerPlayer");
 				twoPlayersBtn.setVisible(false);
 				playAIBtn.setVisible(false);
@@ -188,11 +207,34 @@ public class SetUpPanel extends JPanel {
 				startConnectFour.setBoardVisible(true);
 				
 				startConnectFour.setTurn(99); // 99 represent the computer
-				startConnectFour.computerTurnFirst();
+				startConnectFour.computersTurn();
 				
 				
 			}
 
+		}
+	}
+	
+	private void loadBackgroundImage(){
+		try {
+			Image background = ImageIO.read(getClass().getResource("/resources/startWallpaper.png"));
+			startScreen.setIcon(new ImageIcon(background));
+			
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Images Could Not Be Loaded!");
+			System.exit(0); // terminates code
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Something Went Wrong!");
+			System.exit(0); // terminates code
+		}
+	}
+	
+	private void setBackgroundImage(boolean set){
+		if(set){
+			add(startScreen, BorderLayout.CENTER);
+		}else if (!set){
+			remove(startScreen);
+			add(startConnectFour, BorderLayout.CENTER);
 		}
 	}
 }

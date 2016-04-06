@@ -8,15 +8,73 @@ public class AIPlayer {
 	private final static int EMPTY = 0, P1 = 1, COMPUTER = 99;
 	private int currentPlayer;
 	
+	private int compRow, compCol;
+	
 	public AIPlayer(int[][] grid){
 		this.grid = grid;
+		resetAI();
 	}
 	
-	public int firstTurnAI(){
+	public void resetAI(){
+		for (int i = 0; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL; j++) {
+				grid[i][j] = EMPTY;
+			}
+		}
+		this.compRow = 0;
+		this.compCol = 0;
+	}
+	
+	private int getRandomCol(){
 		Random randStart = new Random();
 		int x = randStart.nextInt((BOARD_COL - 1) + 1);
 		System.out.println(x); 
 		return x;
+	}
+	
+	public void compMove(){
+		int col;
+		do{
+			col = getRandomCol();
+		}while(isColumnFull(col));
+		int row = getRowPlacement(col);
+		grid[row][col] = COMPUTER;
+		this.compRow = row;
+		this.compCol = col;
+	}
+	
+	public int getAIRow(){
+		return compRow;
+	}
+	
+	public int getAICol(){
+		return compCol;
+	}
+	
+	private int getRowPlacement(int col){
+		int rowPlaceable = BOARD_ROW - 1;;
+		boolean rowPlacementFound = false;
+		do{
+			if (grid[rowPlaceable][col] == EMPTY) {
+				rowPlacementFound = true;
+			}else if(rowPlaceable >= 0){
+				rowPlaceable -= 1;
+			}
+			
+		}while(!rowPlacementFound);
+		
+		return rowPlaceable;
+	}
+	
+	private boolean isColumnFull(int col){
+		boolean isFull;
+		if(grid[0][col] != EMPTY){
+			isFull = true;
+		}else{
+			isFull = false;
+		}
+		
+		return isFull;
 	}
 	
 	public void switchCurrentPlayer() {	
@@ -38,7 +96,7 @@ public class AIPlayer {
 	}
 	
 	
-	public void updateAIArray (int row, int col , int change){
+	public void updateAIArray (int row, int col, int change){
 		grid[row][col] = change;
 	}
 	public int getCell(int x, int y){

@@ -15,6 +15,15 @@ public class MultiPlayerConnect4{
 	
 	public MultiPlayerConnect4(int[][] grid){
 		this.grid = grid;
+		resetAI();
+	}	
+	
+	public void resetAI(){
+		for (int i = 0; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL; j++) {
+				grid[i][j] = EMPTY;
+			}
+		}
 	}
 	
 	public void setColPlaced(int col){
@@ -40,14 +49,12 @@ public class MultiPlayerConnect4{
 	public void placePlayer1Chip(){
 		if(currentPlayer == P1){
 			ConnectFourPanel.bluePlaced(rowPlaced, colPlaced);
-			print();
 		}
 	}
 	
 	public void placePlayer2Chip(){
 		if(currentPlayer == P2){
 			ConnectFourPanel.redPlaced(rowPlaced, colPlaced);
-			print();
 		}	
 	}
 	
