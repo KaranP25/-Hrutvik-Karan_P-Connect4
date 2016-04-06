@@ -14,7 +14,7 @@ import javax.swing.*;
  * @author hrutvik and karan
  *
  */
-public class SetUpPanel extends JPanel {
+public class SetUpGUIPanel extends JPanel {
 	private static JButton twoPlayersBtn, playAIBtn, newGameBtn, randomPlayerBtn, playerGoFirstBtn, compGoFirstBtn;
 	private static JLabel player1Lbl, player2Lbl, AILbl, startScreen;
 	private JPanel mainPanel, setUpPanel;
@@ -22,7 +22,7 @@ public class SetUpPanel extends JPanel {
 	
 	private boolean firstStart = true;
 
-	public SetUpPanel() {
+	public SetUpGUIPanel() {
 		// Buttons
 		twoPlayersBtn = new JButton("Play With Two Player");
 		twoPlayersBtn.setFont(new Font("Sans Serif", Font.ITALIC, 14));
