@@ -9,9 +9,12 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 /**
- * This class is the panel which contains all the algorithms required to play the game
- * @author hrutvik and karan
- *
+ * This class is the panel which contains all the algorithms required to play
+ * the game It contains the main board that runs both the multiplayer and AI
+ * games as well as displays and check for the winner
+ * 
+ * @author Hrutvik & Karan
+ * @version 1.0
  */
 public class ConnectFourPanel extends JPanel implements ActionListener {
 	private final static int GRID_ROW = 7, GRID_COL = 7, HGAP = 10, VGAP = 10;
@@ -112,8 +115,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 					}
 
 				}
+				System.out.println();
 				updateArray();
-				if (isWinnerFound() || isTieGame()) {
+				checkTieGame();
+				if (isWinnerFound()) {
 					displayResult();
 				}
 			}
@@ -140,95 +145,71 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 			System.exit(0); // terminates code
 		}
 	}
-	
-	// multiplayer 
-	public int getRandomPlayer(){
-		return multiPlayerConnect4.getRandomPlayer();
+
+	// multiplayer
+	public int getRandomPlayer() {
+		return multiPlayers.getRandomPlayer();
 	}
-	
-	//AI
-	public void computersTurn(){
-	currentPlayer = playWithComputer.getCurrentPlayer();
-		if(currentPlayer == COMPUTER){
+
+	// AI
+	public void computersTurn() {
+		currentPlayer = playWithComputer.getCurrentPlayer();
+		if (currentPlayer == COMPUTER) {
 			playWithComputer.compMove();
 			int compRowPlaced = playWithComputer.getAIRow();
 			int compColPlaced = playWithComputer.getAICol();
 			greenPlaced(compRowPlaced, compColPlaced);
 			grid[compRowPlaced][compColPlaced] = COMPUTER;
-			
+
 			playWithComputer.switchCurrentPlayer();
-			movesPossible -= 1;	
+			movesPossible -= 1;
 		}
 	}
-	
-	public void setTurn(int turn){
+
+	public void setTurn(int turn) {
 		playWithComputer.setCurrentPlayer(turn);
 		this.currentPlayer = turn;
 	}
-	
-	private int getRowPlacedAt(int col){
-		int rowPlaceable = BOARD_ROW - 1;;
-		boolean rowPlacementFound = false;
-		do{
-			if (grid[rowPlaceable][col] == EMPTY) {
-				rowPlacementFound = true;
-			}else if(rowPlaceable >= 0){
-				rowPlaceable -= 1;
-			}
-			
-		}while(!rowPlacementFound);
-		
-		return rowPlaceable;
-	}
-	
-	private void updateArray(){
+
+	private void updateArray() {
 		for (int i = 0; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL; j++) {
-				if(gameType.equals("MultiPlayerConnect4")){
-					grid[i][j] = multiPlayerConnect4.getCell(i, j);
-				}else if(gameType.equals("ComputerPlayer")){
+				if (gameType.equals("MultiPlayerConnect4")) {
+					grid[i][j] = multiPlayers.getCell(i, j);
+				} else if (gameType.equals("ComputerPlayer")) {
 					grid[i][j] = playWithComputer.getCell(i, j);
 				}
 			}
 		}
 	}
-	
-	public static boolean isColumnFilled(int col) {
-		if (grid[0][col] != 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	public static void bluePlaced(int posRow, int posCol) {
+	private void bluePlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(Color.BLUE);
-		//switchPlayer = true;
-		if (isColumnFilled(posCol)) {
+		// switchPlayer = true;
+		if (multiPlayers.isColumnFilled(posCol) || playWithComputer.isColumnFull(posCol)) {
 			placement[posCol].setEnabled(false);
 			placement[posCol].setToolTipText("Column FILLED");
 		}
 	}
 
-	public static void redPlaced(int posRow, int posCol) {
+	private void redPlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(Color.RED);
-		//switchPlayer = true;
-		if (isColumnFilled(posCol)) {
-			placement[posCol].setEnabled(false);
-			placement[posCol].setToolTipText("Column FILLED");
-		}
-	}
-	
-	public static void greenPlaced(int posRow, int posCol) {
-		board[posRow][posCol].setBackground(new Color(102, 255, 102));
-		//switchPlayer = true;
-		if (isColumnFilled(posCol)) {
+		// switchPlayer = true;
+		if (multiPlayers.isColumnFilled(posCol)) {
 			placement[posCol].setEnabled(false);
 			placement[posCol].setToolTipText("Column FILLED");
 		}
 	}
 
-	
+	private void greenPlaced(int posRow, int posCol) {
+		board[posRow][posCol].setBackground(new Color(102, 255, 102));
+		// switchPlayer = true;
+		if (playWithComputer.isColumnFull(posCol)) {
+			placement[posCol].setEnabled(false);
+			placement[posCol].setToolTipText("Column FILLED");
+		}
+	}
+
 	public void setBoardVisible(boolean visible) {
 		if (visible) {
 			for (int i = 0; i < placement.length; i++) {
@@ -250,12 +231,12 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
-	private void checkTieGame(){
-		if (movesPossible < 1){
+
+	private void checkTieGame() {
+		if (movesPossible < 1) {
 			setBoardVisible(false);
 			JOptionPane.showMessageDialog(null, "Tie Game!");
-		}		
+		}
 	}
 
 	private void winnerFound(int c1x, int c1y, int c2x, int c2y, int c3x, int c3y, int c4x, int c4y) {
@@ -292,8 +273,8 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 				}
 			}
 		}
-		// Diagonal win check 
-		for (int i = 0; i < BOARD_ROW - 3; i++) { // > 
+		// Diagonal win check
+		for (int i = 0; i < BOARD_ROW - 3; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				tempCheck = grid[i][j];
 				if (tempCheck != EMPTY && tempCheck == grid[i + 1][j + 1] && tempCheck == grid[i + 2][j + 2]
@@ -315,19 +296,23 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 		return false;
 	}
-	
-	private void displayResult(){
-		if (currentPlayer == 1 || currentPlayer == 2){
+
+	private void displayResult() {
+		if (currentPlayer == 1 || currentPlayer == 2) {
 			JOptionPane.showMessageDialog(null, "Player " + currentPlayer + " wins!!!");
-		}else if (currentPlayer == 99){
+		} else if (currentPlayer == 99) {
 			JOptionPane.showMessageDialog(null, "Computer wins!!!");
 		}
 	}
-	
-	private boolean isNextMovePossible(){
-		if(canMoveBeMade){
+
+	private boolean isNextMovePossible() {
+		if (movesPossible == 0) {
+			canMoveBeMade = false;
+		}
+
+		if (canMoveBeMade) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -344,24 +329,22 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 			placement[i].setEnabled(false);
 			placement[i].setToolTipText("");
 		}
-		if(gameType.equals("MultiPlayerConnect4")){
-			multiPlayerConnect4.resetMultiplayerArray();
-		}else if(gameType.equals("ComputerPlayer")){
-			
+		if (gameType.equals("MultiPlayerConnect4")) {
+			multiPlayers.resetMultiPlayerArray();
+		} else if (gameType.equals("ComputerPlayer")) {
 			playWithComputer.resetAIArray();
 			canMoveBeMade = true;
 		}
 		currentPlayer = EMPTY;
-		gameType = "";		
+		gameType = "";
 		movesPossible = BOARD_ROW * BOARD_COL;
 	}
 
 	public void setGameMode(String type) {
 		this.gameType = type;
 	}
-	
+
 	public String getGameMode() {
 		return gameType;
 	}
 }
-

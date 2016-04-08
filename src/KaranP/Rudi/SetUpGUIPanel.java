@@ -9,11 +9,17 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- * This class contains the buttons and labels and determines how the GUI will be displayed
- * This class has a setup panel embedded in the main panel  
- * @author hrutvik and karan
+ * This class contains the buttons and labels and determines how the GUI will be
+ * displayed This class has a setup panel embedded in the main panel which
+ * displays the menu and the connect 4 panels It allows the user to initiates
+ * either multiplayer or computer game Once the game has started, the user has
+ * the ability to return to the menu screen and reset the games
+ * 
+ * @author Hrutvik & Karan
+ * @version 1.0
  *
  */
+@SuppressWarnings("serial")
 public class SetUpGUIPanel extends JPanel implements ActionListener {
 	private final int MAIN_PANEL_WIDTH = 450, MAIN_PANEL_HEIGHT = 480;
 	private static JButton twoPlayersBtn, playAIBtn, newGameBtn, randomPlayerBtn, playerGoFirstBtn, compGoFirstBtn;
@@ -190,7 +196,7 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 
 			player1Lbl.setText("Player 1 > Blue Chip");
 			player2Lbl.setText("Player 2 > Red Chip");
-			AILbl.setText("Computer > Blue Chip");
+
 		}
 		if (event.getSource() == playerGoFirstBtn) {
 			playerGoFirstBtn.setVisible(false);
@@ -198,7 +204,6 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			setUpPanel.remove(playerGoFirstBtn);
 			setUpPanel.remove(compGoFirstBtn);
 
-			player1Lbl.setText("***Player > Blue Chip");
 			setUpPanel.add(newGameBtn);
 			setUpPanel.add(player1Lbl);
 			setUpPanel.add(AILbl);
@@ -212,7 +217,6 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			setUpPanel.remove(playerGoFirstBtn);
 			setUpPanel.remove(compGoFirstBtn);
 
-			AILbl.setText("***Computer > Blue Chip");
 			setUpPanel.add(newGameBtn);
 			setUpPanel.add(player1Lbl);
 			setUpPanel.add(AILbl);
@@ -223,12 +227,15 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 		}
 
 	}
-	
-	private void loadBackgroundImage(){
+
+	/**
+	 * This Method load the images and set the image for the startScreen JLabel
+	 */
+	private void loadBackgroundImage() {
 		try {
 			Image background = ImageIO.read(getClass().getResource("/resources/startWallpaper.png"));
 			startScreen.setIcon(new ImageIcon(background));
-			
+
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Images Could Not Be Loaded!");
 			System.exit(0); // terminates code
@@ -237,11 +244,17 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			System.exit(0); // terminates code
 		}
 	}
-	
-	private void setBackgroundImage(boolean set){
-		if(set){
+
+	/**
+	 * This method displays and hides the main starting image
+	 * 
+	 * @param set:
+	 *            true - display background image, false - hide image
+	 */
+	private void setBackgroundImage(boolean set) {
+		if (set) {
 			add(startScreen, BorderLayout.CENTER);
-		}else if (!set){
+		} else if (!set) {
 			remove(startScreen);
 			add(startConnectFour, BorderLayout.CENTER);
 		}

@@ -3,16 +3,16 @@ package KaranP.Rudi;
 import javax.swing.*;
 
 /**
- * This class is the driver which contains the JFrame and JPanel (SetUpPanel) with it's dimensions 
- * @author hrutvik and Karan 
- *
+ * This class is the driver which contains the JFrame and initiates the main menu JPanel(SetUpPanel)
+ * with it's dimensions 
+ * @author Hrutvik & Karan
+ * @version 1.0
  */
 public class ConnectFourDriver {
 
 	public static void main(String[] args) {
 		
-		JFrame frame = new JFrame("Connect 4");		
-		frame.setSize(900,900);
+		JFrame frame = new JFrame("Connect 4");	
 		frame.getContentPane().add(new SetUpGUIPanel());
 		frame.pack();
 		frame.setVisible(true);
