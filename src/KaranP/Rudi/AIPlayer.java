@@ -4,8 +4,8 @@ import java.util.Random;
 
 /**
  * This class contains methods and instance variables of the AI/Computer object
- * It choose a completely random move to play along with the player
- * It also chooses a position rather than random move if the player is about to win
+ * It choose a completely random move to play along with the player It also
+ * chooses a position rather than random move if the player is about to win
  * 
  * @author Hrutvik & Karan
  * @version 1.0
@@ -17,10 +17,12 @@ public class AIPlayer {
 	private int currentPlayer;
 
 	private int compRow, compCol, forceCompCol;
-	
+
 	/**
 	 * Initiate the AI Player
-	 * @param grid: gets the 2D array
+	 * 
+	 * @param grid:
+	 *            gets the 2D array
 	 */
 	public AIPlayer(int[][] grid) {
 		this.grid = grid;
@@ -39,9 +41,10 @@ public class AIPlayer {
 		this.compRow = 0;
 		this.compCol = 0;
 	}
-	
+
 	/**
 	 * This method returns a random column for AI move
+	 * 
 	 * @return
 	 */
 	private int getRandomCol() {
@@ -51,8 +54,9 @@ public class AIPlayer {
 	}
 
 	/**
-	 * This method set the computer chip for the board based on either on random column or
-	 * the possibility of player winning resulting in blocking players win chance
+	 * This method set the computer chip for the board based on either on random
+	 * column or the possibility of player winning resulting in blocking players
+	 * win chance
 	 */
 	public void compMove() {
 		int col;
@@ -71,14 +75,16 @@ public class AIPlayer {
 
 	/**
 	 * This method returns the AI row placement on the connect four board
+	 * 
 	 * @return
 	 */
 	public int getAIRow() {
 		return compRow;
 	}
-	
+
 	/**
 	 * This method returns the AI col placement on the connect four board
+	 * 
 	 * @return
 	 */
 	public int getAICol() {
@@ -139,9 +145,108 @@ public class AIPlayer {
 		for (int i = BOARD_ROW - 1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == EMPTY) {
-
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 3)) {
+						this.forceCompCol = j + 3;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+
+		// diagonal > positive
+		for (int i = 0; i < BOARD_ROW - 3; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i + 1][j + 1] == P1 && grid[i + 2][j + 2] == P1 && grid[i + 3][j + 3] == P1
+						&& grid[i][j] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
+						this.forceCompCol = j;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < BOARD_ROW - 3; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i + 2][j + 2] == P1 && grid[i + 3][j + 3] == P1
+						&& grid[i + 1][j + 1] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 1, j + 1)) {
+						this.forceCompCol = j + 1;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < BOARD_ROW - 3; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i + 1][j + 1] == P1 && grid[i + 3][j + 3] == P1
+						&& grid[i + 2][j + 2] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 2, j + 2)) {
+						this.forceCompCol = j + 2;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = 0; i < BOARD_ROW - 3; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i + 1][j + 1] == P1 && grid[i + 2][j + 2] == P1
+						&& grid[i + 3][j + 3] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 3, j + 3)) {
+						this.forceCompCol = j + 3;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+
+		// diagonal > negative
+		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i - 1][j + 1] == P1 && grid[i - 1][j + 2] == P1 && grid[i - 1][j + 3] == P1
+						&& grid[i][j] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
+						this.forceCompCol = j;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i - 2][j + 2] == P1 && grid[i - 3][j + 3] == P1
+						&& grid[i - 1][j + 1] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 1, j + 1)) {
+						this.forceCompCol = j + 1;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i - 1][j + 1] == P1 && grid[i - 3][j + 3] == P1
+						&& grid[i - 2][j + 2] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 2, j + 2)) {
+						this.forceCompCol = j + 2;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i - 1][j + 1] == P1 && grid[i - 2][j + 2] == P1
+						&& grid[i - 3][j + 3] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 3, j + 3)) {
 						this.forceCompCol = j + 3;
 						isCompColForced = true;
 					}
@@ -161,10 +266,11 @@ public class AIPlayer {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * This method return the row that chip must be placed at depending on the column
-	 * and the availability of spaces that is left to be filled
+	 * This method return the row that chip must be placed at depending on the
+	 * column and the availability of spaces that is left to be filled
+	 * 
 	 * @param col
 	 * @return
 	 */
@@ -184,8 +290,9 @@ public class AIPlayer {
 	}
 
 	/**
-	 * This method checks if the column that the chip is being placed at,
-	 * is not full
+	 * This method checks if the column that the chip is being placed at, is not
+	 * full
+	 * 
 	 * @param col
 	 * @return
 	 */
@@ -198,7 +305,7 @@ public class AIPlayer {
 		}
 		return isFull;
 	}
-	
+
 	/**
 	 * This method will switch the curentPlayer to the next one
 	 */
@@ -211,7 +318,9 @@ public class AIPlayer {
 	}
 
 	/**
-	 * This method will sets the current player based on user decision of who goes first 
+	 * This method will sets the current player based on user decision of who
+	 * goes first
+	 * 
 	 * @param turn
 	 */
 	public void setCurrentPlayer(int turn) {
@@ -222,6 +331,7 @@ public class AIPlayer {
 
 	/**
 	 * This method return the current player that will be making its move
+	 * 
 	 * @return
 	 */
 	public int getCurrentPlayer() {
@@ -229,7 +339,9 @@ public class AIPlayer {
 	}
 
 	/**
-	 * This method updates the instance 2d array based on player change at row and column
+	 * This method updates the instance 2d array based on player change at row
+	 * and column
+	 * 
 	 * @param row
 	 * @param col
 	 * @param change
@@ -237,12 +349,15 @@ public class AIPlayer {
 	public void updateArrayCell(int row, int col, int change) {
 		this.grid[row][col] = change;
 	}
-	
+
 	/**
-	 *  This method return the value at the specific index
-	 * it is mainly used to update the array in ConnectFourPanel
-	 * @param x: rows
-	 * @param y: column
+	 * This method return the value at the specific index it is mainly used to
+	 * update the array in ConnectFourPanel
+	 * 
+	 * @param x:
+	 *            rows
+	 * @param y:
+	 *            column
 	 * @return
 	 */
 	public int getCell(int x, int y) {
