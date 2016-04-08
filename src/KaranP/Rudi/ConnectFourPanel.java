@@ -13,11 +13,11 @@ import java.io.IOException;
  * @author hrutvik and karan
  *
  */
-public class ConnectFourPanel extends JPanel {
+public class ConnectFourPanel extends JPanel implements ActionListener {
 	private final static int GRID_ROW = 7, GRID_COL = 7, HGAP = 10, VGAP = 10;
 	private final static int PANEL_WIDTH = (50 * GRID_ROW) + (GRID_ROW * HGAP) + 10;
 	private final static int PANEL_HEIGHT = (50 * GRID_COL) + (GRID_COL * VGAP) + 10;
-	
+
 	private static JLabel[][] board;
 	private static JButton[] placement;
 	private static int[][] grid;
@@ -26,11 +26,12 @@ public class ConnectFourPanel extends JPanel {
 
 	private String gameType;
 	private int currentPlayer;
-	private boolean canMoveBeMade = true ;
+	private boolean canMoveBeMade = true;
 	private int movesPossible = BOARD_ROW * BOARD_COL;
 	AIPlayer playWithComputer;
-	MultiPlayer multiPlayerConnect4;
+	MultiPlayer multiPlayers;
 
+	@SuppressWarnings("static-access")
 	public ConnectFourPanel() {
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(new Color(0, 0, 0));
@@ -41,12 +42,12 @@ public class ConnectFourPanel extends JPanel {
 
 		placement = new JButton[BOARD_COL];
 		for (int i = 0; i < placement.length; i++) {
-			placement[i] = new JButton();
+			this.placement[i] = new JButton();
 			placement[i].setHorizontalAlignment(SwingConstants.CENTER);
 			placement[i].setContentAreaFilled(false);
 			placement[i].setEnabled(false);
 			placement[i].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-			placement[i].addActionListener(new ButtonActionListener());
+			placement[i].addActionListener(this);
 			add(placement[i]);
 		}
 
@@ -64,53 +65,56 @@ public class ConnectFourPanel extends JPanel {
 			}
 		}
 		loadImageFile();
-		multiPlayerConnect4 = new MultiPlayer(grid);
+		multiPlayers = new MultiPlayer(grid);
 		playWithComputer = new AIPlayer(grid);
-		
+
 	}
 
-	private class ButtonActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent event) {
-			int colPlaced, rowPlaced;
-			for (int i = 0; i < placement.length; i++) {
-				if (event.getSource() == placement[i]) {
-					colPlaced = i;
-					rowPlaced = getRowPlacedAt(colPlaced);
-					
-					if (gameType.equals("MultiPlayerConnect4")){
-						currentPlayer = multiPlayerConnect4.getCurrentPlayer();
-						multiPlayerConnect4.setRowPlaced(rowPlaced);
-						multiPlayerConnect4.setColPlaced(colPlaced);
-						multiPlayerConnect4.upDateList();
-						
-						if (currentPlayer == P1) {
-							multiPlayerConnect4.placePlayer1Chip();
-						} else if (currentPlayer == P2) {
-							multiPlayerConnect4.placePlayer2Chip();
-						}
-						
-						multiPlayerConnect4.switchCurrentPlayer();
-						movesPossible -= 1;	
-						
-					}else if (gameType.equals("ComputerPlayer")){
-						currentPlayer = playWithComputer.getCurrentPlayer();
-						if (currentPlayer == P1) {
-							grid[rowPlaced][colPlaced] = P1;
-							bluePlaced(rowPlaced, colPlaced);
-							playWithComputer.updateArrayCell(rowPlaced, colPlaced, P1);	
-							movesPossible -= 1;	
-						}
-						if(isNextMovePossible() && !isWinnerFound()){
-							playWithComputer.switchCurrentPlayer();
-							computersTurn();	
-						}
-						
+	/**
+	 * This method is from the ActionListener class and handles events
+	 */
+	public void actionPerformed(ActionEvent event) {
+
+		int colPlaced, rowPlaced;
+		for (int i = 0; i < placement.length; i++) {
+			if (event.getSource() == placement[i]) {
+				colPlaced = i;
+
+				if (gameType.equals("MultiPlayerConnect4")) {
+					currentPlayer = multiPlayers.getCurrentPlayer();
+					rowPlaced = multiPlayers.getRowPlacedAt(colPlaced);
+					multiPlayers.setRowPlaced(rowPlaced);
+					multiPlayers.setColPlaced(colPlaced);
+
+					if (currentPlayer == P1) {
+						multiPlayers.placePlayer1Chip();
+						bluePlaced(multiPlayers.getRow(), multiPlayers.getCol());
+					} else if (currentPlayer == P2) {
+						multiPlayers.placePlayer2Chip();
+						redPlaced(multiPlayers.getRow(), multiPlayers.getCol());
 					}
-					updateArray();
-					checkTieGame();
-					if(isWinnerFound()){
-						displayResult();
-					}	
+
+					multiPlayers.switchCurrentPlayer();
+					movesPossible -= 1;
+
+				} else if (gameType.equals("ComputerPlayer")) {
+					currentPlayer = playWithComputer.getCurrentPlayer();
+					if (currentPlayer == P1) {
+						rowPlaced = playWithComputer.getRowPlacement(colPlaced);
+						grid[rowPlaced][colPlaced] = P1;
+						bluePlaced(rowPlaced, colPlaced);
+						playWithComputer.updateArrayCell(rowPlaced, colPlaced, P1);
+						movesPossible -= 1;
+					}
+					if (isNextMovePossible() && !isWinnerFound()) {
+						playWithComputer.switchCurrentPlayer();
+						computersTurn();
+					}
+
+				}
+				updateArray();
+				if (isWinnerFound() || isTieGame()) {
+					displayResult();
 				}
 			}
 		}
