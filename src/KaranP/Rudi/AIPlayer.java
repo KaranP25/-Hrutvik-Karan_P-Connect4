@@ -56,14 +56,13 @@ public class AIPlayer {
 	 */
 	public void compMove() {
 		int col;
-		//!isPlayerPossibleToWin()
-		//if () {
+		if (!isPlayerPossibleToWin()) {
 			do {
 				col = getRandomCol();
 			} while (isColumnFull(col));
-		//} else {
-			//col = forceCompCol;
-		//}
+		} else {
+			col = forceCompCol;
+		}
 		int row = getRowPlacement(col);
 		this.grid[row][col] = COMPUTER;
 		this.compRow = row;
@@ -86,7 +85,82 @@ public class AIPlayer {
 		return compCol;
 	}
 
-	
+	private boolean isPlayerPossibleToWin() {
+		boolean found = false;
+		boolean isCompColForced = false;
+
+		// Vertical > Has more priority
+		for (int i = BOARD_ROW - 1; i >= 3; i--) {
+			for (int j = BOARD_COL - 1; j >= 0; j--) {
+				if (grid[i][j] == P1 && grid[i - 1][j] == P1 && grid[i - 2][j] == P1 && grid[i - 3][j] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced) {
+						this.forceCompCol = j;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+
+		// Horizontal
+		for (int i = BOARD_ROW - 1; i >= 0; i--) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
+						this.forceCompCol = j;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 1; i >= 0; i--) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j + 1] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 1)) {
+						forceCompCol = j + 1;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 1; i >= 0; i--) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 3] == P1 && grid[i][j + 2] == EMPTY) {
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 2)) {
+						this.forceCompCol = j + 2;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+		for (int i = BOARD_ROW - 1; i >= 0; i--) {
+			for (int j = 0; j < BOARD_COL - 3; j++) {
+				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == EMPTY) {
+
+					found = true;
+					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 3)) {
+						this.forceCompCol = j + 3;
+						isCompColForced = true;
+					}
+				}
+			}
+		}
+
+		return found;
+	}
+
+	private boolean isBottomRowOfColFilled(int row, int col) {
+		if (row == 5) {
+			return false;
+		} else if (grid[row + 1][col] == EMPTY) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	/**
 	 * This method return the row that chip must be placed at depending on the column

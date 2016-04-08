@@ -196,7 +196,7 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 
 			player1Lbl.setText("Player 1 > Blue Chip");
 			player2Lbl.setText("Player 2 > Red Chip");
-
+			AILbl.setText("Computer > Blue Chip");
 		}
 		if (event.getSource() == playerGoFirstBtn) {
 			playerGoFirstBtn.setVisible(false);
@@ -204,6 +204,7 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			setUpPanel.remove(playerGoFirstBtn);
 			setUpPanel.remove(compGoFirstBtn);
 
+			player1Lbl.setText("***Player > Blue Chip");
 			setUpPanel.add(newGameBtn);
 			setUpPanel.add(player1Lbl);
 			setUpPanel.add(AILbl);
@@ -217,6 +218,7 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			setUpPanel.remove(playerGoFirstBtn);
 			setUpPanel.remove(compGoFirstBtn);
 
+			AILbl.setText("***Computer > Blue Chip");
 			setUpPanel.add(newGameBtn);
 			setUpPanel.add(player1Lbl);
 			setUpPanel.add(AILbl);

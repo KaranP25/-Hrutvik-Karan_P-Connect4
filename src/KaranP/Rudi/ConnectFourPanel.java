@@ -115,10 +115,8 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 					}
 
 				}
-				System.out.println();
 				updateArray();
-				checkTieGame();
-				if (isWinnerFound()) {
+				if (isWinnerFound() || isTieGame()) {
 					displayResult();
 				}
 			}
@@ -232,10 +230,11 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void checkTieGame() {
+	private boolean isTieGame() {
 		if (movesPossible < 1) {
-			setBoardVisible(false);
-			JOptionPane.showMessageDialog(null, "Tie Game!");
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -298,10 +297,15 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 	}
 
 	private void displayResult() {
-		if (currentPlayer == 1 || currentPlayer == 2) {
-			JOptionPane.showMessageDialog(null, "Player " + currentPlayer + " wins!!!");
-		} else if (currentPlayer == 99) {
-			JOptionPane.showMessageDialog(null, "Computer wins!!!");
+		if(isWinnerFound()){
+			if (currentPlayer == 1 || currentPlayer == 2) {
+				JOptionPane.showMessageDialog(null, "Player " + currentPlayer + " wins!!!");
+			} else if (currentPlayer == 99) {
+				JOptionPane.showMessageDialog(null, "Computer wins!!!");
+			}
+		} else if (movesPossible < 1) {
+			setBoardVisible(false);
+			JOptionPane.showMessageDialog(null, "Tie Game!");
 		}
 	}
 
@@ -309,7 +313,6 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		if (movesPossible == 0) {
 			canMoveBeMade = false;
 		}
-
 		if (canMoveBeMade) {
 			return true;
 		} else {
