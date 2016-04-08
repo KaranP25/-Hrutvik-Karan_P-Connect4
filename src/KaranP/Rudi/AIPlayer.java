@@ -17,7 +17,7 @@ public class AIPlayer {
 	private int currentPlayer;
 
 	private int compRow, compCol, forceCompCol;
-	private Random randStart = new Random();
+	private Random randStart;
 
 	/**
 	 * Initiate the AI Player
@@ -49,6 +49,7 @@ public class AIPlayer {
 	 * @return
 	 */
 	private int getRandomCol() {
+		randStart = new Random();
 		int x = randStart.nextInt((BOARD_COL - 1) + 1);
 		return x;
 	}
@@ -117,7 +118,7 @@ public class AIPlayer {
 		// Horizontal
 		for (int i = BOARD_ROW - 1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
-				if (grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j] == EMPTY) {
+				if (grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j] == EMPTY && !isBottomRowOfColFilled(i, j)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
 						System.out.println("horizontal");
@@ -129,7 +130,7 @@ public class AIPlayer {
 		}
 		for (int i = BOARD_ROW - 1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
-				if (grid[i][j] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j + 1] == EMPTY) {
+				if (grid[i][j] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == P1 && grid[i][j + 1] == EMPTY && !isBottomRowOfColFilled(i, j + 1)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 1)) {
 						System.out.println("horizontal");
@@ -141,7 +142,7 @@ public class AIPlayer {
 		}
 		for (int i = BOARD_ROW - 1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
-				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 3] == P1 && grid[i][j + 2] == EMPTY) {
+				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 3] == P1 && grid[i][j + 2] == EMPTY  && !isBottomRowOfColFilled(i, j + 2)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 2)) {
 						System.out.println("horizontal");
@@ -153,7 +154,7 @@ public class AIPlayer {
 		}
 		for (int i = BOARD_ROW - 1; i >= 0; i--) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
-				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == EMPTY) {
+				if (grid[i][j] == P1 && grid[i][j + 1] == P1 && grid[i][j + 2] == P1 && grid[i][j + 3] == EMPTY  && !isBottomRowOfColFilled(i, j +3)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j + 3)) {
 						System.out.println("horizontal");
@@ -168,7 +169,7 @@ public class AIPlayer {
 		for (int i = 0; i < BOARD_ROW - 3; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i + 1][j + 1] == P1 && grid[i + 2][j + 2] == P1 && grid[i + 3][j + 3] == P1
-						&& grid[i][j] == EMPTY) {
+						&& grid[i][j] == EMPTY && !isBottomRowOfColFilled(i, j)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
 						System.out.println("diagnol 1");
@@ -181,7 +182,7 @@ public class AIPlayer {
 		for (int i = 0; i < BOARD_ROW - 3; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i + 2][j + 2] == P1 && grid[i + 3][j + 3] == P1
-						&& grid[i + 1][j + 1] == EMPTY) {
+						&& grid[i + 1][j + 1] == EMPTY  && !isBottomRowOfColFilled(i + 1, j + 1)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 1, j + 1)) {
 						System.out.println("diagnol 1");
@@ -194,7 +195,7 @@ public class AIPlayer {
 		for (int i = 0; i < BOARD_ROW - 3; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i + 1][j + 1] == P1 && grid[i + 3][j + 3] == P1
-						&& grid[i + 2][j + 2] == EMPTY) {
+						&& grid[i + 2][j + 2] == EMPTY && !isBottomRowOfColFilled(i + 2, j + 2)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 2, j + 2)) {
 						System.out.println("diagnol 1");
@@ -207,7 +208,7 @@ public class AIPlayer {
 		for (int i = 0; i < BOARD_ROW - 3; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i + 1][j + 1] == P1 && grid[i + 2][j + 2] == P1
-						&& grid[i + 3][j + 3] == EMPTY) {
+						&& grid[i + 3][j + 3] == EMPTY && !isBottomRowOfColFilled(i + 3, j + 3)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i + 3, j + 3)) {
 						System.out.println("diagnol 1");
@@ -222,7 +223,7 @@ public class AIPlayer {
 		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i - 1][j + 1] == P1 && grid[i - 1][j + 2] == P1 && grid[i - 1][j + 3] == P1
-						&& grid[i][j] == EMPTY) {
+						&& grid[i][j] == EMPTY && !isBottomRowOfColFilled(i,j)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i, j)) {
 						System.out.println("diagnol 2 1");
@@ -235,7 +236,7 @@ public class AIPlayer {
 		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i - 2][j + 2] == P1 && grid[i - 3][j + 3] == P1
-						&& grid[i - 1][j + 1] == EMPTY) {
+						&& grid[i - 1][j + 1] == EMPTY && !isBottomRowOfColFilled(i - 1, j + 1)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 1, j + 1)) {
 						System.out.println("diagnol 2 2");
@@ -248,7 +249,7 @@ public class AIPlayer {
 		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i - 1][j + 1] == P1 && grid[i - 3][j + 3] == P1
-						&& grid[i - 2][j + 2] == EMPTY) {
+						&& grid[i - 2][j + 2] == EMPTY && !isBottomRowOfColFilled(i - 2, j + 2)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 2, j + 2)) {
 						System.out.println("diagnol 2 3");
@@ -261,7 +262,7 @@ public class AIPlayer {
 		for (int i = BOARD_ROW - 3; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL - 3; j++) {
 				if (grid[i][j] == P1 && grid[i - 1][j + 1] == P1 && grid[i - 2][j + 2] == P1
-						&& grid[i - 3][j + 3] == EMPTY) {
+						&& grid[i - 3][j + 3] == EMPTY && !isBottomRowOfColFilled(i - 3, j + 3)) {
 					found = true;
 					if (found && !isCompColForced && !isBottomRowOfColFilled(i - 3, j + 3)) {
 						System.out.println("diagnol 2 4");
@@ -271,7 +272,6 @@ public class AIPlayer {
 				}
 			}
 		}
-
 		return found;
 	}
 
