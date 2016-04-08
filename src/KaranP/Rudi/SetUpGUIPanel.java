@@ -250,8 +250,7 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 	/**
 	 * This method displays and hides the main starting image
 	 * 
-	 * @param set:
-	 *            true - display background image, false - hide image
+	 * @param set: true - display background image, false - hide image
 	 */
 	private void setBackgroundImage(boolean set) {
 		if (set) {

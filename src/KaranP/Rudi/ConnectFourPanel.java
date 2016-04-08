@@ -177,8 +177,11 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 				} else if (gameType.equals("ComputerPlayer")) {
 					grid[i][j] = playWithComputer.getCell(i, j);
 				}
+				System.out.print(grid[i][j] + "   ");
 			}
+			System.out.println();
 		}
+		System.out.println();
 	}
 
 	private void bluePlaced(int posRow, int posCol) {
