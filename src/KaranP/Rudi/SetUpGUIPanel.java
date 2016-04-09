@@ -217,8 +217,9 @@ public class SetUpGUIPanel extends JPanel implements ActionListener {
 			compGoFirstBtn.setVisible(false);
 			setUpPanel.remove(playerGoFirstBtn);
 			setUpPanel.remove(compGoFirstBtn);
-
-			AILbl.setText("***Computer > Blue Chip");
+			
+			player1Lbl.setText("Player > Blue Chip");
+			AILbl.setText("***Computer > Green Chip");
 			setUpPanel.add(newGameBtn);
 			setUpPanel.add(player1Lbl);
 			setUpPanel.add(AILbl);

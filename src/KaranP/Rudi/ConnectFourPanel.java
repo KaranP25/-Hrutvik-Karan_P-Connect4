@@ -123,6 +123,9 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This Method load the images and set the image the JButton and JLabel for the board
+	 */
 	private void loadImageFile() {
 		try {
 			Image downArrow = ImageIO.read(getClass().getResource("/resources/DownArrow.png"));
@@ -144,12 +147,17 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	// multiplayer
+	/**
+	 * This method returns the player that will go first in the multiplayer game
+	 * @return
+	 */
 	public int getRandomPlayer() {
 		return multiPlayers.getRandomPlayer();
 	}
 
-	// AI
+	/**
+	 * This methods allows the computer to place a chip on the board
+	 */
 	public void computersTurn() {
 		currentPlayer = playWithComputer.getCurrentPlayer();
 		if (currentPlayer == COMPUTER) {
@@ -164,11 +172,18 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method sets the turn of who goes first 
+	 * @param turn
+	 */
 	public void setTurn(int turn) {
 		playWithComputer.setCurrentPlayer(turn);
 		this.currentPlayer = turn;
 	}
 
+	/**
+	 * This method updates the grid array based on data from either AIPlayer or MultiPlayer class
+	 */
 	private void updateArray() {
 		for (int i = 0; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL; j++) {
@@ -177,13 +192,15 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 				} else if (gameType.equals("ComputerPlayer")) {
 					grid[i][j] = playWithComputer.getCell(i, j);
 				}
-				System.out.print(grid[i][j] + "   ");
 			}
-			System.out.println();
 		}
-		System.out.println();
 	}
 
+	/**
+	 * This method sets the background of the specific JLabel to blue based on parameter
+	 * @param posRow - row position of 2d JLabel
+	 * @param posCol - column position of 2d JLabel
+	 */
 	private void bluePlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(Color.BLUE);
 		// switchPlayer = true;
@@ -193,6 +210,11 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method sets the background of the specific JLabel to red based on parameter
+	 * @param posRow - row position of 2d JLabel
+	 * @param posCol - column position of 2d JLabel
+	 */
 	private void redPlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(Color.RED);
 		// switchPlayer = true;
@@ -202,6 +224,11 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method sets the background of the specific JLabel to green based on parameter
+	 * @param posRow - row position of 2d JLabel
+	 * @param posCol - column position of 2d JLabel
+	 */
 	private void greenPlaced(int posRow, int posCol) {
 		board[posRow][posCol].setBackground(new Color(102, 255, 102));
 		// switchPlayer = true;
@@ -211,6 +238,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method disables or enables the board components based on the parameter
+	 * @param visible - true - enables the board components, false - disables the board components
+	 */
 	public void setBoardVisible(boolean visible) {
 		if (visible) {
 			for (int i = 0; i < placement.length; i++) {
@@ -233,6 +264,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method checks if a game has resulted in a tie
+	 * @return
+	 */
 	private boolean isTieGame() {
 		if (movesPossible < 1) {
 			return true;
@@ -241,6 +276,18 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method is called if the winner is found and disables the board and sets the
+	 * moves done by the winner of either game JLabel to true
+	 * @param c1x
+	 * @param c1y
+	 * @param c2x
+	 * @param c2y
+	 * @param c3x
+	 * @param c3y
+	 * @param c4x
+	 * @param c4y
+	 */
 	private void winnerFound(int c1x, int c1y, int c2x, int c2y, int c3x, int c3y, int c4x, int c4y) {
 		this.canMoveBeMade = false;
 		setBoardVisible(false);
@@ -251,6 +298,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		board[c4x][c4y].setEnabled(true);
 	}
 
+	/**
+	 * This method returns true or false if the board has a winner or not
+	 * @return
+	 */
 	private boolean isWinnerFound() {
 		int tempCheck;
 		// vertical win check
@@ -299,6 +350,9 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		return false;
 	}
 
+	/**
+	 * This method displays the winner or if a game has been tied  
+	 */
 	private void displayResult() {
 		if(isWinnerFound()){
 			if (currentPlayer == 1 || currentPlayer == 2) {
@@ -312,6 +366,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method returns if a next move is possible by the computer 
+	 * @return
+	 */
 	private boolean isNextMovePossible() {
 		if (movesPossible == 0) {
 			canMoveBeMade = false;
@@ -323,6 +381,10 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * This method resets the board by setting the JLabels and JButtons back to its original state.
+	 * It also resets the instances of other classes based on which gamemode the user is playing
+	 */
 	public void gameReset() {
 		for (int i = 0; i < BOARD_ROW; i++) {
 			for (int j = 0; j < BOARD_COL; j++) {
@@ -346,10 +408,19 @@ public class ConnectFourPanel extends JPanel implements ActionListener {
 		movesPossible = BOARD_ROW * BOARD_COL;
 	}
 
+	/**
+	 * This method sets the game mode that will be player on the board
+	 * It will be either Multiplayer or with a computer
+	 * @param type
+	 */
 	public void setGameMode(String type) {
 		this.gameType = type;
 	}
 
+	/**
+	 * This method returns the gameType that is being played
+	 * @return
+	 */
 	public String getGameMode() {
 		return gameType;
 	}
